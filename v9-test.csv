@@ -1,0 +1,751 @@
+question,gold_classes_and_properties,gold_query,ground_truth_query_output
+"Among all patients, how many have any diagnosis [CVD (414.01, 428.0, I25.10, Z79.50, Z95.5); AF (427.41, 427.K41, I48.0, I48.91); DM (250.00, E11.9)] AND Anticoagulant_Use (V58.61, Z79.01)?","Condition[patient_reference,icd9_reference,icd10cm_reference],icd9[skos:notation],icd10cm[skos:notation]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?c1 a flat:Condition ;
+      flat:patient_reference ?p .
+  {
+    ?c1 flat:icd9_code ?code1 .
+  } UNION {
+    ?c1 flat:icd10_code ?code1 .
+  }
+  BIND(UCASE(REPLACE(STR(?code1), ""\\."", """")) AS ?n1)
+  FILTER(?norm IN (""25000"",""41401"",""42741"",""427K41"",""4280"",""E119"",""I2510"",""I480"",""I4891"",""Z7950"",""Z955""))
+  FILTER EXISTS {
+    ?c2 a flat:Condition ;
+        flat:patient_reference ?p .
+    {
+      ?c2 flat:icd9_code ?code2 .
+    } UNION {
+      ?c2 flat:icd10_code ?code2 .
+    }
+    BIND(UCASE(REPLACE(STR(?code2), ""\\."", """")) AS ?n2)
+    FILTER(?norm IN (""V5861"",""Z7901""))
+  }
+}",13
+"Among all patients, how many have any diagnosis [CVD (414.01, 428.0, I25.10, Z79.50, Z95.5); AF (427.41, 427.K41, I48.0, I48.91); DM (250.00, E11.9)] AND Antiplatelet_Use (V58.66, Z79.02)?","Condition[patient_reference,icd9_reference,icd10cm_reference],icd9[skos:notation],icd10cm[skos:notation]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?c1 a flat:Condition ;
+      flat:patient_reference ?p .
+  {
+    ?c1 flat:icd9_code ?code1 .
+  } UNION {
+    ?c1 flat:icd10_code ?code1 .
+  }
+  BIND(UCASE(REPLACE(STR(?code1), ""\\."", """")) AS ?n1)
+  FILTER(?norm IN (""25000"",""41401"",""42741"",""427K41"",""4280"",""E119"",""I2510"",""I480"",""I4891"",""Z7950"",""Z955""))
+  FILTER EXISTS {
+    ?c2 a flat:Condition ;
+        flat:patient_reference ?p .
+    {
+      ?c2 flat:icd9_code ?code2 .
+    } UNION {
+      ?c2 flat:icd10_code ?code2 .
+    }
+    BIND(UCASE(REPLACE(STR(?code2), ""\\."", """")) AS ?n2)
+    FILTER(?norm IN (""V5866"",""Z7902""))
+  }
+}",18
+"Among all patients, how many have any diagnosis [CVD (414.01, 428.0, I25.10, Z79.50, Z95.5); AF (427.41, 427.K41, I48.0, I48.91); DM (250.00, E11.9)] AND Insulin_Use (V58.67, Z79.4)?","Condition[patient_reference,icd9_reference,icd10cm_reference],icd9[skos:notation],icd10cm[skos:notation]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?c1 a flat:Condition ;
+      flat:patient_reference ?p .
+  {
+    ?c1 flat:icd9_code ?code1 .
+  } UNION {
+    ?c1 flat:icd10_code ?code1 .
+  }
+  BIND(UCASE(REPLACE(STR(?code1), ""\\."", """")) AS ?n1)
+  FILTER(?norm IN (""25000"",""41401"",""42741"",""427K41"",""4280"",""E119"",""I2510"",""I480"",""I4891"",""Z7950"",""Z955""))
+  FILTER EXISTS {
+    ?c2 a flat:Condition ;
+        flat:patient_reference ?p .
+    {
+      ?c2 flat:icd9_code ?code2 .
+    } UNION {
+      ?c2 flat:icd10_code ?code2 .
+    }
+    BIND(UCASE(REPLACE(STR(?code2), ""\\."", """")) AS ?n2)
+    FILTER(?norm IN (""V5867"",""Z794""))
+  }
+}",16
+"How many patients have CVD (414.01, 428.0, I25.10, Z79.50, Z95.5) AND Insulin_Use (V58.67, Z79.4)?","Condition[patient_reference,icd9_reference,icd10cm_reference],icd9[skos:notation],icd10cm[skos:notation]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?c1 a flat:Condition ;
+      flat:patient_reference ?p .
+  {
+    ?c1 flat:icd9_code ?code1 .
+  } UNION {
+    ?c1 flat:icd10_code ?code1 .
+  }
+  BIND(UCASE(REPLACE(STR(?code1), ""\\."", """")) AS ?n1)
+  FILTER(?norm IN (""41401"",""4280"",""I2510"",""Z7950"",""Z955""))
+  FILTER EXISTS {
+    ?c2 a flat:Condition ;
+        flat:patient_reference ?p .
+    {
+      ?c2 flat:icd9_code ?code2 .
+    } UNION {
+      ?c2 flat:icd10_code ?code2 .
+    }
+    BIND(UCASE(REPLACE(STR(?code2), ""\\."", """")) AS ?n2)
+    FILTER(?norm IN (""V5867"",""Z794""))
+  }
+}",9
+"How many patients have CVD (414.01, 428.0, I25.10, Z79.50, Z95.5) AND Anticoagulant_Use (V58.61, Z79.01)?","Condition[patient_reference,icd9_reference,icd10cm_reference],icd9[skos:notation],icd10cm[skos:notation]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?c1 a flat:Condition ;
+      flat:patient_reference ?p .
+  {
+    ?c1 flat:icd9_code ?code1 .
+  } UNION {
+    ?c1 flat:icd10_code ?code1 .
+  }
+  BIND(UCASE(REPLACE(STR(?code1), ""\\."", """")) AS ?n1)
+  FILTER(?norm IN (""41401"",""4280"",""I2510"",""Z7950"",""Z955""))
+  FILTER EXISTS {
+    ?c2 a flat:Condition ;
+        flat:patient_reference ?p .
+    {
+      ?c2 flat:icd9_code ?code2 .
+    } UNION {
+      ?c2 flat:icd10_code ?code2 .
+    }
+    BIND(UCASE(REPLACE(STR(?code2), ""\\."", """")) AS ?n2)
+    FILTER(?norm IN (""V5861"",""Z7901""))
+  }
+}",10
+"How many patients have CVD (414.01, 428.0, I25.10, Z79.50, Z95.5) AND Antiplatelet_Use (V58.66, Z79.02)?","Condition[patient_reference,icd9_reference,icd10cm_reference],icd9[skos:notation],icd10cm[skos:notation]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?c1 a flat:Condition ;
+      flat:patient_reference ?p .
+  {
+    ?c1 flat:icd9_code ?code1 .
+  } UNION {
+    ?c1 flat:icd10_code ?code1 .
+  }
+  BIND(UCASE(REPLACE(STR(?code1), ""\\."", """")) AS ?n1)
+  FILTER(?norm IN (""41401"",""4280"",""I2510"",""Z7950"",""Z955""))
+  FILTER EXISTS {
+    ?c2 a flat:Condition ;
+        flat:patient_reference ?p .
+    {
+      ?c2 flat:icd9_code ?code2 .
+    } UNION {
+      ?c2 flat:icd10_code ?code2 .
+    }
+    BIND(UCASE(REPLACE(STR(?code2), ""\\."", """")) AS ?n2)
+    FILTER(?norm IN (""V5866"",""Z7902""))
+  }
+}",14
+"How many patients have AF (427.41, 427.K41, I48.0, I48.91) AND Insulin_Use (V58.67, Z79.4)?","Condition[patient_reference,icd9_reference,icd10cm_reference],icd9[skos:notation],icd10cm[skos:notation]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?c1 a flat:Condition ;
+      flat:patient_reference ?p .
+  {
+    ?c1 flat:icd9_code ?code1 .
+  } UNION {
+    ?c1 flat:icd10_code ?code1 .
+  }
+  BIND(UCASE(REPLACE(STR(?code1), ""\\."", """")) AS ?n1)
+  FILTER(?norm IN (""42741"",""427K41"",""I480"",""I4891""))
+  FILTER EXISTS {
+    ?c2 a flat:Condition ;
+        flat:patient_reference ?p .
+    {
+      ?c2 flat:icd9_code ?code2 .
+    } UNION {
+      ?c2 flat:icd10_code ?code2 .
+    }
+    BIND(UCASE(REPLACE(STR(?code2), ""\\."", """")) AS ?n2)
+    FILTER(?norm IN (""V5867"",""Z794""))
+  }
+}",3
+"How many patients have AF (427.41, 427.K41, I48.0, I48.91) AND Anticoagulant_Use (V58.61, Z79.01)?","Condition[patient_reference,icd9_reference,icd10cm_reference],icd9[skos:notation],icd10cm[skos:notation]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?c1 a flat:Condition ;
+      flat:patient_reference ?p .
+  {
+    ?c1 flat:icd9_code ?code1 .
+  } UNION {
+    ?c1 flat:icd10_code ?code1 .
+  }
+  BIND(UCASE(REPLACE(STR(?code1), ""\\."", """")) AS ?n1)
+  FILTER(?norm IN (""42741"",""427K41"",""I480"",""I4891""))
+  FILTER EXISTS {
+    ?c2 a flat:Condition ;
+        flat:patient_reference ?p .
+    {
+      ?c2 flat:icd9_code ?code2 .
+    } UNION {
+      ?c2 flat:icd10_code ?code2 .
+    }
+    BIND(UCASE(REPLACE(STR(?code2), ""\\."", """")) AS ?n2)
+    FILTER(?norm IN (""V5861"",""Z7901""))
+  }
+}",8
+"How many patients have AF (427.41, 427.K41, I48.0, I48.91) AND Antiplatelet_Use (V58.66, Z79.02)?","Condition[patient_reference,icd9_reference,icd10cm_reference],icd9[skos:notation],icd10cm[skos:notation]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?c1 a flat:Condition ;
+      flat:patient_reference ?p .
+  {
+    ?c1 flat:icd9_code ?code1 .
+  } UNION {
+    ?c1 flat:icd10_code ?code1 .
+  }
+  BIND(UCASE(REPLACE(STR(?code1), ""\\."", """")) AS ?n1)
+  FILTER(?norm IN (""42741"",""427K41"",""I480"",""I4891""))
+  FILTER EXISTS {
+    ?c2 a flat:Condition ;
+        flat:patient_reference ?p .
+    {
+      ?c2 flat:icd9_code ?code2 .
+    } UNION {
+      ?c2 flat:icd10_code ?code2 .
+    }
+    BIND(UCASE(REPLACE(STR(?code2), ""\\."", """")) AS ?n2)
+    FILTER(?norm IN (""V5866"",""Z7902""))
+  }
+}",7
+"How many patients have DM (250.00, E11.9) AND Insulin_Use (V58.67, Z79.4)?","Condition[patient_reference,icd9_reference,icd10cm_reference],icd9[skos:notation],icd10cm[skos:notation]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?c1 a flat:Condition ;
+      flat:patient_reference ?p .
+  {
+    ?c1 flat:icd9_code ?code1 .
+  } UNION {
+    ?c1 flat:icd10_code ?code1 .
+  }
+  BIND(UCASE(REPLACE(STR(?code1), ""\\."", """")) AS ?n1)
+  FILTER(?norm IN (""25000"",""E119""))
+  FILTER EXISTS {
+    ?c2 a flat:Condition ;
+        flat:patient_reference ?p .
+    {
+      ?c2 flat:icd9_code ?code2 .
+    } UNION {
+      ?c2 flat:icd10_code ?code2 .
+    }
+    BIND(UCASE(REPLACE(STR(?code2), ""\\."", """")) AS ?n2)
+    FILTER(?norm IN (""V5867"",""Z794""))
+  }
+}",13
+"How many patients have DM (250.00, E11.9) AND Anticoagulant_Use (V58.61, Z79.01)?","Condition[patient_reference,icd9_reference,icd10cm_reference],icd9[skos:notation],icd10cm[skos:notation]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?c1 a flat:Condition ;
+      flat:patient_reference ?p .
+  {
+    ?c1 flat:icd9_code ?code1 .
+  } UNION {
+    ?c1 flat:icd10_code ?code1 .
+  }
+  BIND(UCASE(REPLACE(STR(?code1), ""\\."", """")) AS ?n1)
+  FILTER(?norm IN (""25000"",""E119""))
+  FILTER EXISTS {
+    ?c2 a flat:Condition ;
+        flat:patient_reference ?p .
+    {
+      ?c2 flat:icd9_code ?code2 .
+    } UNION {
+      ?c2 flat:icd10_code ?code2 .
+    }
+    BIND(UCASE(REPLACE(STR(?code2), ""\\."", """")) AS ?n2)
+    FILTER(?norm IN (""V5861"",""Z7901""))
+  }
+}",5
+"How many patients have DM (250.00, E11.9) AND Antiplatelet_Use (V58.66, Z79.02)?","Condition[patient_reference,icd9_reference,icd10cm_reference],icd9[skos:notation],icd10cm[skos:notation]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?c1 a flat:Condition ;
+      flat:patient_reference ?p .
+  {
+    ?c1 flat:icd9_code ?code1 .
+  } UNION {
+    ?c1 flat:icd10_code ?code1 .
+  }
+  BIND(UCASE(REPLACE(STR(?code1), ""\\."", """")) AS ?n1)
+  FILTER(?norm IN (""25000"",""E119""))
+  FILTER EXISTS {
+    ?c2 a flat:Condition ;
+        flat:patient_reference ?p .
+    {
+      ?c2 flat:icd9_code ?code2 .
+    } UNION {
+      ?c2 flat:icd10_code ?code2 .
+    }
+    BIND(UCASE(REPLACE(STR(?code2), ""\\."", """")) AS ?n2)
+    FILTER(?norm IN (""V5866"",""Z7902""))
+  }
+}",7
+"Among all patients, how many have any diagnosis [CVD (414.01, 428.0, I25.10, Z79.50, Z95.5); AF (427.41, 427.K41, I48.0, I48.91); DM (250.00, E11.9)] AND any therapy-use [V58.61, V58.66, V58.67, Z79.01, Z79.02, Z79.4]?","Condition[patient_reference,icd9_reference,icd10cm_reference],icd9[skos:notation],icd10cm[skos:notation]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?c1 a flat:Condition ;
+      flat:patient_reference ?p .
+  {
+    ?c1 flat:icd9_code ?code1 .
+  } UNION {
+    ?c1 flat:icd10_code ?code1 .
+  }
+  BIND(UCASE(REPLACE(STR(?code1), ""\\."", """")) AS ?n1)
+  FILTER(?norm IN (""25000"",""41401"",""42741"",""427K41"",""4280"",""E119"",""I2510"",""I480"",""I4891"",""Z7950"",""Z955""))
+  FILTER EXISTS {
+    ?c2 a flat:Condition ;
+        flat:patient_reference ?p .
+    {
+      ?c2 flat:icd9_code ?code2 .
+    } UNION {
+      ?c2 flat:icd10_code ?code2 .
+    }
+    BIND(UCASE(REPLACE(STR(?code2), ""\\."", """")) AS ?n2)
+    FILTER(?norm IN (""V5861"",""V5866"",""V5867"",""Z7901"",""Z7902"",""Z794""))
+  }
+}",35
+How many distinct patients appear in Condition resources (any code)?,Condition[patient_reference],"SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?c a flat:Condition ;
+     flat:patient_reference ?p .
+}",100
+"Among all patients, how many have any diagnosis [AF (427.41, 427.K41, I48.0, I48.91)] AND any therapy-use [V58.61, V58.66, V58.67, Z79.01, Z79.02, Z79.4]?","Condition[patient_reference,icd9_reference,icd10cm_reference],icd9[skos:notation],icd10cm[skos:notation]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?c1 a flat:Condition ;
+      flat:patient_reference ?p .
+  {
+    ?c1 flat:icd9_code ?code1 .
+  } UNION {
+    ?c1 flat:icd10_code ?code1 .
+  }
+  BIND(UCASE(REPLACE(STR(?code1), ""\\."", """")) AS ?n1)
+  FILTER(?norm IN (""42741"",""427K41"",""I480"",""I4891""))
+  FILTER EXISTS {
+    ?c2 a flat:Condition ;
+        flat:patient_reference ?p .
+    {
+      ?c2 flat:icd9_code ?code2 .
+    } UNION {
+      ?c2 flat:icd10_code ?code2 .
+    }
+    BIND(UCASE(REPLACE(STR(?code2), ""\\."", """")) AS ?n2)
+    FILTER(?norm IN (""V5861"",""V5866"",""V5867"",""Z7901"",""Z7902"",""Z794""))
+  }
+}",11
+"Among all patients, how many have any diagnosis [CVD (414.01, 428.0, I25.10, Z79.50, Z95.5)] AND any therapy-use [V58.61, V58.66, V58.67, Z79.01, Z79.02, Z79.4]?","Condition[patient_reference,icd9_reference,icd10cm_reference],icd9[skos:notation],icd10cm[skos:notation]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?c1 a flat:Condition ;
+      flat:patient_reference ?p .
+  {
+    ?c1 flat:icd9_code ?code1 .
+  } UNION {
+    ?c1 flat:icd10_code ?code1 .
+  }
+  BIND(UCASE(REPLACE(STR(?code1), ""\\."", """")) AS ?n1)
+  FILTER(?norm IN (""41401"",""4280"",""I2510"",""Z7950"",""Z955""))
+  FILTER EXISTS {
+    ?c2 a flat:Condition ;
+        flat:patient_reference ?p .
+    {
+      ?c2 flat:icd9_code ?code2 .
+    } UNION {
+      ?c2 flat:icd10_code ?code2 .
+    }
+    BIND(UCASE(REPLACE(STR(?code2), ""\\."", """")) AS ?n2)
+    FILTER(?norm IN (""V5861"",""V5866"",""V5867"",""Z7901"",""Z7902"",""Z794""))
+  }
+}",25
+"Among all patients, how many have any diagnosis [DM (250.00, E11.9)] AND any therapy-use [V58.61, V58.66, V58.67, Z79.01, Z79.02, Z79.4]?","Condition[patient_reference,icd9_reference,icd10cm_reference],icd9[skos:notation],icd10cm[skos:notation]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?c1 a flat:Condition ;
+      flat:patient_reference ?p .
+  {
+    ?c1 flat:icd9_code ?code1 .
+  } UNION {
+    ?c1 flat:icd10_code ?code1 .
+  }
+  BIND(UCASE(REPLACE(STR(?code1), ""\\."", """")) AS ?n1)
+  FILTER(?norm IN (""25000"",""E119""))
+  FILTER EXISTS {
+    ?c2 a flat:Condition ;
+        flat:patient_reference ?p .
+    {
+      ?c2 flat:icd9_code ?code2 .
+    } UNION {
+      ?c2 flat:icd10_code ?code2 .
+    }
+    BIND(UCASE(REPLACE(STR(?code2), ""\\."", """")) AS ?n2)
+    FILTER(?norm IN (""V5861"",""V5866"",""V5867"",""Z7901"",""Z7902"",""Z794""))
+  }
+}",19
+How many Condition resources are in the KG?,Condition[icd9_code],"SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE {
+              ?s a flat:Condition .
+            }",4181
+How many Condition resources have an ICD-9 code?,Condition[icd9_code],"SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE {
+              ?s a flat:Condition ;
+                 flat:icd9_code ?c9 .
+            }",2107
+How many Condition resources have an ICD-10 code?,Condition[icd10_code],"SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE {
+              ?s a flat:Condition ;
+                 flat:icd10_code ?c10 .
+            }",2074
+How many Condition resources have BOTH ICD-9 and ICD-10 codes?,"Condition[icd9_code,icd10_code]","SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE {
+              ?s a flat:Condition ;
+                 flat:icd9_code ?c9 ;
+                 flat:icd10_code ?c10 .
+            }",0
+How many Condition resources have ONLY ICD-9 (and no ICD-10)?,"Condition[icd9_code,icd10_code]","SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE {
+              ?s a flat:Condition ;
+                 flat:icd9_code ?c9 .
+              FILTER NOT EXISTS { ?s flat:icd10_code ?any . }
+            }",2107
+How many Condition resources have ONLY ICD-10 (and no ICD-9)?,"Condition[icd10_code,icd9_code]","SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE {
+              ?s a flat:Condition ;
+                 flat:icd10_code ?c10 .
+              FILTER NOT EXISTS { ?s flat:icd9_code ?any . }
+            }",2074
+How many DISTINCT ICD-9 code values appear among Condition resources?,Condition[icd9_code],"SELECT (COUNT(DISTINCT ?c9) AS ?n) WHERE {
+              ?s a flat:Condition ;
+                 flat:icd9_code ?c9 .
+            }",724
+How many DISTINCT ICD-10 code values appear among Condition resources?,Condition[icd10_code],"SELECT (COUNT(DISTINCT ?c10) AS ?n) WHERE {
+              ?s a flat:Condition ;
+                 flat:icd10_code ?c10 .
+            }",678
+How many Patient resources are in the KG?,Patient,"PREFIX flat: <http://example.org/flat/>
+SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?p a flat:Patient .
+}",100
+How many Patients have gender = 'female'?,Patient[gender],"PREFIX flat: <http://example.org/flat/>
+SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?p a flat:Patient ;
+     flat:gender ""female"" .
+}",39
+How many Patients have gender = 'male'?,Patient[gender],"PREFIX flat: <http://example.org/flat/>
+SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?p a flat:Patient ;
+     flat:gender ""male"" .
+}",61
+How many Patients have marital_status = 'divorced'?,Patient[marital_status],"PREFIX flat: <http://example.org/flat/>
+SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?p a flat:Patient ;
+     flat:marital_status ""divorced"" .
+}",9
+How many Patients have marital_status = 'married'?,Patient[marital_status],"PREFIX flat: <http://example.org/flat/>
+SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?p a flat:Patient ;
+     flat:marital_status ""married"" .
+}",38
+How many Patients have marital_status = 'never married'?,Patient[marital_status],"PREFIX flat: <http://example.org/flat/>
+SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?p a flat:Patient ;
+     flat:marital_status ""never married"" .
+}",29
+How many Patients have marital_status = 'unknown'?,Patient[marital_status],"PREFIX flat: <http://example.org/flat/>
+SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?p a flat:Patient ;
+     flat:marital_status ""unknown"" .
+}",10
+How many Patients have marital_status = 'widowed'?,Patient[marital_status],"PREFIX flat: <http://example.org/flat/>
+SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?p a flat:Patient ;
+     flat:marital_status ""widowed"" .
+}",14
+How many patients have hypertension [401.9 or I10]?,"Condition[patient_reference,icd9_code,patient_reference,icd10_code]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  {
+    ?c a flat:Condition ;
+       flat:patient_reference ?p ;
+       flat:icd9_code ?c9 .
+    BIND(UCASE(REPLACE(STR(?c9), ""\\."", """")) AS ?n9)
+    FILTER(?n9 = ""4019"")
+  }
+  UNION
+  {
+    ?c a flat:Condition ;
+       flat:patient_reference ?p ;
+       flat:icd10_code ?c10 .
+    BIND(UCASE(REPLACE(STR(?c10), ""\\."", """")) AS ?n10)
+    FILTER(?n10 = ""I10"")
+  }
+}",53
+How many patients have hyperlipidemia (defined as ICD-9 272.4 or ICD-10 E78.5)?,"Condition[patient_reference,icd9_code,patient_reference,icd10_code]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  {
+    ?c a flat:Condition ;
+       flat:patient_reference ?p ;
+       flat:icd9_code ?c9 .
+    BIND(UCASE(REPLACE(STR(?c9), ""\\."", """")) AS ?n9)
+    FILTER(?n9 = ""2724"")
+  }
+  UNION
+  {
+    ?c a flat:Condition ;
+       flat:patient_reference ?p ;
+       flat:icd10_code ?c10 .
+    BIND(UCASE(REPLACE(STR(?c10), ""\\."", """")) AS ?n10)
+    FILTER(?n10 = ""E785"")
+  }
+}",47
+What is the count of Procedure.category_code = 'Peripheral Lines'?,"Procedure[category_codes,category_code]","SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE {
+  ?s a flat:Procedure .
+  FILTER(
+    EXISTS { ?s flat:category_codes ?c . FILTER(?c = ""Peripheral Lines"") } ||
+    EXISTS { ?s flat:category_code  ?c2 . FILTER(?c2 = ""Peripheral Lines"") }
+  )
+}",350
+What is the count of Procedure.category_code = 'Procedures'?,"Procedure[category_codes,category_code]","SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE {
+  ?s a flat:Procedure .
+  FILTER(
+    EXISTS { ?s flat:category_codes ?c . FILTER(?c = ""Procedures"") } ||
+    EXISTS { ?s flat:category_code  ?c2 . FILTER(?c2 = ""Procedures"") }
+  )
+}",305
+What is the count of Procedure.category_code = 'Imaging'?,"Procedure[category_codes,category_code]","SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE {
+  ?s a flat:Procedure .
+  FILTER(
+    EXISTS { ?s flat:category_codes ?c . FILTER(?c = ""Imaging"") } ||
+    EXISTS { ?s flat:category_code  ?c2 . FILTER(?c2 = ""Imaging"") }
+  )
+}",249
+What is the count of Procedure.category_code = 'Invasive Lines'?,"Procedure[category_codes,category_code]","SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE {
+  ?s a flat:Procedure .
+  FILTER(
+    EXISTS { ?s flat:category_codes ?c . FILTER(?c = ""Invasive Lines"") } ||
+    EXISTS { ?s flat:category_code  ?c2 . FILTER(?c2 = ""Invasive Lines"") }
+  )
+}",214
+What is the count of Procedure.category_code = 'Communication'?,"Procedure[category_codes,category_code]","SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE {
+  ?s a flat:Procedure .
+  FILTER(
+    EXISTS { ?s flat:category_codes ?c . FILTER(?c = ""Communication"") } ||
+    EXISTS { ?s flat:category_code  ?c2 . FILTER(?c2 = ""Communication"") }
+  )
+}",79
+What is the count of Procedure.category_code = 'Ventilation'?,"Procedure[category_codes,category_code]","SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE {
+  ?s a flat:Procedure .
+  FILTER(
+    EXISTS { ?s flat:category_codes ?c . FILTER(?c = ""Ventilation"") } ||
+    EXISTS { ?s flat:category_code  ?c2 . FILTER(?c2 = ""Ventilation"") }
+  )
+}",70
+What is the count of Procedure.category_code = 'Intubation/Extubation'?,"Procedure[category_codes,category_code]","SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE {
+  ?s a flat:Procedure .
+  FILTER(
+    EXISTS { ?s flat:category_codes ?c . FILTER(?c = ""Intubation/Extubation"") } ||
+    EXISTS { ?s flat:category_code  ?c2 . FILTER(?c2 = ""Intubation/Extubation"") }
+  )
+}",62
+What is the count of Procedure.category_code = 'Significant Events'?,"Procedure[category_codes,category_code]","SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE {
+  ?s a flat:Procedure .
+  FILTER(
+    EXISTS { ?s flat:category_codes ?c . FILTER(?c = ""Significant Events"") } ||
+    EXISTS { ?s flat:category_code  ?c2 . FILTER(?c2 = ""Significant Events"") }
+  )
+}",50
+What is the count of Procedure.category_code = 'Tubes'?,"Procedure[category_codes,category_code]","SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE {
+  ?s a flat:Procedure .
+  FILTER(
+    EXISTS { ?s flat:category_codes ?c . FILTER(?c = ""Tubes"") } ||
+    EXISTS { ?s flat:category_code  ?c2 . FILTER(?c2 = ""Tubes"") }
+  )
+}",30
+What is the count of Procedure.category_code = 'Continuous Procedures'?,"Procedure[category_codes,category_code]","SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE {
+  ?s a flat:Procedure .
+  FILTER(
+    EXISTS { ?s flat:category_codes ?c . FILTER(?c = ""Continuous Procedures"") } ||
+    EXISTS { ?s flat:category_code  ?c2 . FILTER(?c2 = ""Continuous Procedures"") }
+  )
+}",8
+What is the count of Procedure.category_code = 'Dialysis'?,"Procedure[category_codes,category_code]","SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE {
+  ?s a flat:Procedure .
+  FILTER(
+    EXISTS { ?s flat:category_codes ?c . FILTER(?c = ""Dialysis"") } ||
+    EXISTS { ?s flat:category_code  ?c2 . FILTER(?c2 = ""Dialysis"") }
+  )
+}",7
+What is the count of Procedure.category_code = 'CRRT Filter Change'?,"Procedure[category_codes,category_code]","SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE {
+  ?s a flat:Procedure .
+  FILTER(
+    EXISTS { ?s flat:category_codes ?c . FILTER(?c = ""CRRT Filter Change"") } ||
+    EXISTS { ?s flat:category_code  ?c2 . FILTER(?c2 = ""CRRT Filter Change"") }
+  )
+}",2
+"How many patients have renal failure (defined as ICD-9 585.9 or 584.9, or ICD-10 I12.9 or N17.0)?","Condition[patient_reference,icd9_reference,icd10cm_reference],icd9[skos:notation],icd10cm[skos:notation]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?c a flat:Condition ;
+     flat:patient_reference ?p .
+  {
+    ?c flat:icd9_code ?c9 .
+    BIND(UCASE(REPLACE(STR(?c9), ""\\."", """")) AS ?n9)
+    FILTER(?n9 IN (""5859"",""5849""))
+  }
+  UNION
+  {
+    ?c flat:icd10_code ?c10 .
+    BIND(UCASE(REPLACE(STR(?c10), ""\\."", """")) AS ?n10)
+    FILTER(?n10 IN (""I129"",""N170""))
+  }
+}",25
+"How many patients do NOT have renal failure (defined as ICD-9 585.9 or 584.9, or ICD-10 I12.9 or N17.0)?","Condition[patient_reference],Procedure[patient_reference]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  { ?c a flat:Condition ;  flat:patient_reference ?p . }
+  UNION
+  { ?s a flat:Procedure ;  flat:patient_reference ?p . }
+}",75
+"Among patients WITH renal failure (defined as ICD-9 585.9 or 584.9, or ICD-10 I12.9 or N17.0), how many DISTINCT Dialysis Procedures exist (Procedure.category equals ""Dialysis"" via flat:category_codes or flat:category_code)?","Procedure[patient_reference,category_codes,category_code]","SELECT DISTINCT ?s ?p WHERE {
+  ?s a flat:Procedure ;
+     flat:patient_reference ?p .
+  {
+    ?s flat:category_codes ?c .
+    FILTER(?c = ""Dialysis"")
+  } UNION {
+    ?s flat:category_code ?c2 .
+    FILTER(?c2 = ""Dialysis"")
+  }
+}",5
+"Among patients WITH renal failure (defined as ICD-9 585.9 or 584.9, or ICD-10 I12.9 or N17.0), how many DISTINCT patients had >= 1 Dialysis Procedure (Procedure.category equals ""Dialysis"" via flat:category_codes or flat:category_code)?","Procedure[patient_reference,category_codes,category_code]","SELECT DISTINCT ?s ?p WHERE {
+  ?s a flat:Procedure ;
+     flat:patient_reference ?p .
+  {
+    ?s flat:category_codes ?c .
+    FILTER(?c = ""Dialysis"")
+  } UNION {
+    ?s flat:category_code ?c2 .
+    FILTER(?c2 = ""Dialysis"")
+  }
+}",2
+"Among patients WITHOUT renal failure (defined as ICD-9 585.9 or 584.9, or ICD-10 I12.9 or N17.0), how many DISTINCT Dialysis Procedures exist (Procedure.category equals ""Dialysis"" via flat:category_codes or flat:category_code)?","Procedure[patient_reference,category_codes,category_code]","SELECT DISTINCT ?s ?p WHERE {
+  ?s a flat:Procedure ;
+     flat:patient_reference ?p .
+  {
+    ?s flat:category_codes ?c .
+    FILTER(?c = ""Dialysis"")
+  } UNION {
+    ?s flat:category_code ?c2 .
+    FILTER(?c2 = ""Dialysis"")
+  }
+}",2
+"Among patients WITHOUT renal failure (defined as ICD-9 585.9 or 584.9, or ICD-10 I12.9 or N17.0), how many DISTINCT patients had >= 1 Dialysis Procedure (Procedure.category equals ""Dialysis"" via flat:category_codes or flat:category_code)?","Procedure[patient_reference,category_codes,category_code]","SELECT DISTINCT ?s ?p WHERE {
+  ?s a flat:Procedure ;
+     flat:patient_reference ?p .
+  {
+    ?s flat:category_codes ?c .
+    FILTER(?c = ""Dialysis"")
+  } UNION {
+    ?s flat:category_code ?c2 .
+    FILTER(?c2 = ""Dialysis"")
+  }
+}",1
+How many patients have respiratory failure (defined as ICD-9 518.81 or ICD-10 J44.9)?,"Condition[patient_reference,icd9_reference,icd10cm_reference],icd9[skos:notation],icd10cm[skos:notation]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  ?c a flat:Condition ;
+     flat:patient_reference ?p .
+  {
+    ?c flat:icd9_code ?c9 .
+    BIND(UCASE(REPLACE(STR(?c9), ""\\."", """")) AS ?n9)
+    FILTER(?n9 IN (""51881""))
+  }
+  UNION
+  {
+    ?c flat:icd10_code ?c10 .
+    BIND(UCASE(REPLACE(STR(?c10), ""\\."", """")) AS ?n10)
+    FILTER(?n10 IN (""J449""))
+  }
+}",22
+How many patients do NOT have respiratory failure (defined as ICD-9 518.81 or ICD-10 J44.9)?,"Condition[patient_reference],Procedure[patient_reference]","SELECT (COUNT(DISTINCT ?p) AS ?n) WHERE {
+  { ?c a flat:Condition ;  flat:patient_reference ?p . }
+  UNION
+  { ?s a flat:Procedure ;  flat:patient_reference ?p . }
+}",78
+"Among patients WITH respiratory failure (defined as ICD-9 518.81 or ICD-10 J44.9), how many DISTINCT Ventilation Procedures exist (Procedure.category is ""Ventilation"")?","Procedure[patient_reference,category_codes,category_code]","SELECT DISTINCT ?s ?p ?cat WHERE {
+  ?s a flat:Procedure ;
+     flat:patient_reference ?p .
+  {
+    ?s flat:category_codes ?c .
+    FILTER(?c IN (""Ventilation"",""Intubation\\Extubation"",""Intubation/Extubation""))
+    BIND(?c AS ?cat)
+  } UNION {
+    ?s flat:category_code ?c2 .
+    FILTER(?c2 IN (""Ventilation"",""Intubation\\Extubation"",""Intubation/Extubation""))
+    BIND(?c2 AS ?cat)
+  }
+}",28
+"Among patients WITH respiratory failure (defined as ICD-9 518.81 or ICD-10 J44.9), how many DISTINCT patients had >= 1 Ventilation Procedure (Procedure.category is ""Ventilation"")?","Procedure[patient_reference,category_codes,category_code]","SELECT DISTINCT ?s ?p ?cat WHERE {
+  ?s a flat:Procedure ;
+     flat:patient_reference ?p .
+  {
+    ?s flat:category_codes ?c .
+    FILTER(?c IN (""Ventilation"",""Intubation\\Extubation"",""Intubation/Extubation""))
+    BIND(?c AS ?cat)
+  } UNION {
+    ?s flat:category_code ?c2 .
+    FILTER(?c2 IN (""Ventilation"",""Intubation\\Extubation"",""Intubation/Extubation""))
+    BIND(?c2 AS ?cat)
+  }
+}",16
+"Among patients WITHOUT respiratory failure (defined as ICD-9 518.81 or ICD-10 J44.9), how many DISTINCT Ventilation Procedures exist (Procedure.category is ""Ventilation"")?","Procedure[patient_reference,category_codes,category_code]","SELECT DISTINCT ?s ?p ?cat WHERE {
+  ?s a flat:Procedure ;
+     flat:patient_reference ?p .
+  {
+    ?s flat:category_codes ?c .
+    FILTER(?c IN (""Ventilation"",""Intubation\\Extubation"",""Intubation/Extubation""))
+    BIND(?c AS ?cat)
+  } UNION {
+    ?s flat:category_code ?c2 .
+    FILTER(?c2 IN (""Ventilation"",""Intubation\\Extubation"",""Intubation/Extubation""))
+    BIND(?c2 AS ?cat)
+  }
+}",42
+"Among patients WITHOUT respiratory failure (defined as ICD-9 518.81 or ICD-10 J44.9), how many DISTINCT patients had >= 1 Ventilation Procedure (Procedure.category is ""Ventilation"")?","Procedure[patient_reference,category_codes,category_code]","SELECT DISTINCT ?s ?p ?cat WHERE {
+  ?s a flat:Procedure ;
+     flat:patient_reference ?p .
+  {
+    ?s flat:category_codes ?c .
+    FILTER(?c IN (""Ventilation"",""Intubation\\Extubation"",""Intubation/Extubation""))
+    BIND(?c AS ?cat)
+  } UNION {
+    ?s flat:category_code ?c2 .
+    FILTER(?c2 IN (""Ventilation"",""Intubation\\Extubation"",""Intubation/Extubation""))
+    BIND(?c2 AS ?cat)
+  }
+}",38
+"Among patients WITH respiratory failure (defined as ICD-9 518.81 or ICD-10 J44.9), how many DISTINCT Intubation\Extubation Procedures exist (Procedure.category is ""Intubation\\Extubation"" or ""Intubation/Extubation"")?","Procedure[patient_reference,category_codes,category_code]","SELECT DISTINCT ?s ?p ?cat WHERE {
+  ?s a flat:Procedure ;
+     flat:patient_reference ?p .
+  {
+    ?s flat:category_codes ?c .
+    FILTER(?c IN (""Ventilation"",""Intubation\\Extubation"",""Intubation/Extubation""))
+    BIND(?c AS ?cat)
+  } UNION {
+    ?s flat:category_code ?c2 .
+    FILTER(?c2 IN (""Ventilation"",""Intubation\\Extubation"",""Intubation/Extubation""))
+    BIND(?c2 AS ?cat)
+  }
+}",27
+"Among patients WITH respiratory failure (defined as ICD-9 518.81 or ICD-10 J44.9), how many DISTINCT patients had >= 1 Intubation\Extubation Procedure (Procedure.category is ""Intubation\\Extubation"" or ""Intubation/Extubation"")?","Procedure[patient_reference,category_codes,category_code]","SELECT DISTINCT ?s ?p ?cat WHERE {
+  ?s a flat:Procedure ;
+     flat:patient_reference ?p .
+  {
+    ?s flat:category_codes ?c .
+    FILTER(?c IN (""Ventilation"",""Intubation\\Extubation"",""Intubation/Extubation""))
+    BIND(?c AS ?cat)
+  } UNION {
+    ?s flat:category_code ?c2 .
+    FILTER(?c2 IN (""Ventilation"",""Intubation\\Extubation"",""Intubation/Extubation""))
+    BIND(?c2 AS ?cat)
+  }
+}",14
+"Among patients WITHOUT respiratory failure (defined as ICD-9 518.81 or ICD-10 J44.9), how many DISTINCT Intubation\Extubation Procedures exist (Procedure.category is ""Intubation\\Extubation"" or ""Intubation/Extubation"")?","Procedure[patient_reference,category_codes,category_code]","SELECT DISTINCT ?s ?p ?cat WHERE {
+  ?s a flat:Procedure ;
+     flat:patient_reference ?p .
+  {
+    ?s flat:category_codes ?c .
+    FILTER(?c IN (""Ventilation"",""Intubation\\Extubation"",""Intubation/Extubation""))
+    BIND(?c AS ?cat)
+  } UNION {
+    ?s flat:category_code ?c2 .
+    FILTER(?c2 IN (""Ventilation"",""Intubation\\Extubation"",""Intubation/Extubation""))
+    BIND(?c2 AS ?cat)
+  }
+}",35
+"Among patients WITHOUT respiratory failure (defined as ICD-9 518.81 or ICD-10 J44.9), how many DISTINCT patients had >= 1 Intubation\Extubation Procedure (Procedure.category is ""Intubation\\Extubation"" or ""Intubation/Extubation"")?","Procedure[patient_reference,category_codes,category_code]","SELECT DISTINCT ?s ?p ?cat WHERE {
+  ?s a flat:Procedure ;
+     flat:patient_reference ?p .
+  {
+    ?s flat:category_codes ?c .
+    FILTER(?c IN (""Ventilation"",""Intubation\\Extubation"",""Intubation/Extubation""))
+    BIND(?c AS ?cat)
+  } UNION {
+    ?s flat:category_code ?c2 .
+    FILTER(?c2 IN (""Ventilation"",""Intubation\\Extubation"",""Intubation/Extubation""))
+    BIND(?c2 AS ?cat)
+  }
+}",30
+What is the name of the Organization with identifier 1194052720?,"Organization[identifier,name]",,Beth Israel Deaconess Medical Center
+Is the Organization Beth Israel Deaconess Medical Center active?,"Organization[active,name]",,TRUE
+What type display of organization is the hospital Beth Israel Deaconess Medical Center?,"Organization[organization_type_display,name]",,Healthcare Provider
+How many Organizations exist in the database?,Organization[id],,1
+How many Locations exist in the database?,Location[id],,39
+How many locations has patient 0a8eebfd-a352-522e-89f0-1d4a13abdebc visited?,"Location[id],LocationEncounter[location_reference,patient_reference],Patient[id]",,3
+How many locations has patient 13df78e7-150e-5eb7-be5f-5f62b2baee87 visited?,"Location[id],LocationEncounter[location_reference,patient_reference],Patient[id]",,3
+How many locations has patient 1ab119a5-aac8-5002-9d2f-b8ff69623387 visited?,"Location[id],LocationEncounter[location_reference,patient_reference],Patient[id]",,3
+How many locations has patient 158f3a39-e3d7-5e7a-93aa-57af894aadd9 visited?,"Location[id],LocationEncounter[location_reference,patient_reference],Patient[id]",,4
+How many locations has patient ece255e8-656b-5e09-8da9-33f88bc270a1 visited?,"Location[id],LocationEncounter[location_reference,patient_reference],Patient[id]",,4
+How many locations has patient e7e213ac-81c0-5c7f-8d57-81519132353e visited?,"Location[id],LocationEncounter[location_reference,patient_reference],Patient[id]",,3
+How many locations has patient f572075b-186b-5565-b2d4-1567fe4f925c visited?,"Location[id],LocationEncounter[location_reference,patient_reference],Patient[id]",,3
+How many locations has patient f5a99b42-365c-5f7e-bcab-4fa33b3cc88e visited?,"Location[id],LocationEncounter[location_reference,patient_reference],Patient[id]",,5
+How many locations has patient e635f2dd-aaec-5fef-a100-b9dfb523cbb6 visited?,"Location[id],LocationEncounter[location_reference,patient_reference],Patient[id]",,4
+How many locations has patient f5efdf3f-5b53-5c9f-95a6-047275107c46 visited?,"Location[id],LocationEncounter[location_reference,patient_reference],Patient[id]",,2
