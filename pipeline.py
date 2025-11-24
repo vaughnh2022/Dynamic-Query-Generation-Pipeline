@@ -1,92 +1,10 @@
 #imports
 import csv
-import openai
-from SPARQLWrapper import SPARQLWrapper, CSV, SPARQLExceptions, JSON
-import time
 from dotenv import load_dotenv
-import os
-import json
 import pandas as pd
-import datetime
 from collections import deque
-import itertools
-import io
-import math
 import pandas as pd
-import ast 
-
-
-#loads env file holding sensitive information like api keys and passwords
-load_dotenv()
-
-
-#--------------------
-#
-# Note class_selection.txt holds the first prompt to pass through the LLM to select the template
-#
-# gui.py holds the flask code to run the gui
-#
-# both static and template folders are for the flask server
-#
-#--------------------
-
-#---------------------------
-# ChatGPT Functions
-# 
-
-def gpt_call(system,prompt,temperature):
-    """
-    This fuction calls gpt-4o and returns the answer
-    Args:
-        system (string): instructions for the LLM before the query
-        prompt (string): chatgpt prompt
-    Returns:
-        str: chatgpt response
-    """
-    client = openai.OpenAI(api_key=os.getenv("gpt_api_key"))
-    response = client.chat.completions.create(
-    model="gpt-4o",
-    messages=[
-        {"role": "system", "content": system}, #system is the description before the prompt
-        {"role": "user", "content": prompt}
-    ],
-        max_tokens=16384,
-        temperature=temperature
-    )
-    return response.choices[0].message.content
-
-def remove_first_and_last_line(text):
-    """
-    This removes the first and last line of a piece of text(used because chatgpt output has ``` brackets around them)
-    Args:
-        text (string): a piece of text
-    Returns:
-        str: chatgpt response (returns only the contructed query)
-    """
-    lines = text.splitlines()
-    if len(lines) <= 2:
-        return ""  # Nothing to return if there's only 1 or 2 lines
-    return "\n".join(lines[1:-1])
-
-#---------------------------
-# File Functions
-# 
-
-def load_template(filename):
-    """
-    This fuction opens a file and reads it
-    Args:
-        filename (string): path to the file name *if not in folder have to put the full path* 
-    Returns:
-        str: everything inside of the file
-    """
-    with open(filename, 'r', encoding='utf-8') as file:
-        return file.read()
-
-
-#---------------------------
-# Pipeline Functions
-# 
+from api_commands import gpt_call, remove_first_and_last_line, load_template, query_database
 
 #   Main Function
 def grag_pipeline(question):
@@ -120,7 +38,6 @@ def grag_pipeline(question):
     answer_list=column_to_list(answer)  #extracts the first collumn of the csv file output for metric running
     print("output is:\n",answer_list)
     return (classes,selected_prop,sparql_query,answer_list) #returns the answer_list, selected classes, selected properties, and query to be added to metric output
-
 
 #extract important classes
 def llm_pick_classes(question):
@@ -517,36 +434,7 @@ Do not output any explanatory text outside of the SPARQL query block.
 """
     return remove_first_and_last_line(gpt_call(system,prompt,0.001))
 
-#queries graphdb
-def query_database(query):
-    """
-    This function queries the knowledge graph database (graphDB) and writes the output to query-result.csv
-    Args:
-        query (string): a sparql query for the database
-    Returns:
-        None : writes output to query-result.csv
-    """
-    sparql = SPARQLWrapper(os.getenv("graphdb_repo"))
-    sparql.setCredentials(os.getenv("graphdb_username"), os.getenv("graphdb_password"))
-    sparql.setReturnFormat(CSV)
-    try:
-        sparql.setQuery(query)
-        response = sparql.query()
-        csv_results = response.convert().decode("utf-8")
-        return io.StringIO(csv_results)
-    except SPARQLExceptions.QueryBadFormed as e:
-        print("SPARQL query is malformed:", e)
-        return "malformed query error"
-    except Exception as e:
-        print("An unexpected error occurred:", e)
-        return "unexpected error"
-
-
-#---------------------------
-# Metric Validation Functions
-# 
-
-
+#extracts a single collumn from the GraphDB csv file output for metrics
 def column_to_list(csv_file):
     reader = csv.reader(csv_file)
     header = next(reader)   
@@ -555,93 +443,3 @@ def column_to_list(csv_file):
         values.append(row[0]) 
     return values
 
-def find_extracted_classes(full_list):
-    print("full list is ", full_list, "and type is ", type(full_list))
-    if full_list is None or full_list == "" or (isinstance(full_list, float) and math.isnan(full_list)):
-        return []
-    ans=[]
-    stack=[]
-    word=""
-    for x in full_list:
-        if x=='[':
-            stack.append(x)
-        if len(stack)==0:
-            if x==',':
-                ans.append(word)
-                word=""
-            else:
-                word=word+x
-        if x==']':
-            stack.pop()
-    ans.append(word)
-    return ans
-
-def answer_tests_csv_file(path):
-    df = pd.read_csv(path, encoding="utf-8")
-    df = df.drop(df.index[0]).reset_index(drop=True)
-    #pipeline to add a tuple of things into collumns in a pandas datafram
-    df[["selected_classes", "selected_properties", "pipeline_created_query", "pipeline_query_output"]] = df["question"].apply(
-        lambda x: pd.Series(grag_pipeline(x))
-    )
-    df['ground_truth_query_output'] = df['ground_truth_query_output'].apply(
-        lambda x: ["True"] if x is True
-        else ["False"] if x is False
-        else ([] if pd.isna(x)
-        else [str(i) for i in x] if isinstance(x, list)
-        else [str(x)])
-    )
-    df['query_output_exact_match'] = df.apply(
-        lambda row: sorted(row['ground_truth_query_output']) == sorted(row['pipeline_query_output']),
-        axis=1
-    )
-    df['extracted_classes'] = df['gold_classes_and_properties'].apply(find_extracted_classes)
-    df['class_exact_match'] = df.apply(
-        lambda row: sorted(row['extracted_classes']) == sorted(row['selected_classes']),
-        axis=1
-    )
-    df['answers_and_gold_intersection'] = df.apply(
-       lambda row: sorted(set(row['ground_truth_query_output']) & set(row['pipeline_query_output'])),
-       axis=1
-    )
-    df['precision_for_output'] = df.apply(
-        lambda row: len(row['answers_and_gold_intersection']) / len(row['ground_truth_query_output']) 
-        if len(row['ground_truth_query_output']) > 0 else 0,
-        axis=1
-    )
-    df['recall_for_output'] = df.apply(
-        lambda row: len(row['answers_and_gold_intersection']) / len(row['pipeline_query_output']) 
-        if len(row['pipeline_query_output']) > 0 else 0,
-        axis=1
-    )
-    f1=0
-    for precision, recall in zip(df['precision_for_output'], df['recall_for_output']):
-        f1+=(2*precision*recall)/(precision+recall) if (precision+recall)!=0 else 0
-    f1=f1/len(df['recall_for_output'])
-    df['output_F1']=f1
-    df['answers_and_gold_intersection_classes'] = df.apply(
-       lambda row: sorted(set(row['extracted_classes']) & set(row['selected_classes'])),
-       axis=1
-    )
-    df['precision_for_classes'] = df.apply(
-        lambda row: len(row['answers_and_gold_intersection_classes']) / len(row['extracted_classes']) 
-        if len(row['extracted_classes']) > 0 else 0,
-        axis=1
-    )
-    df['recall_for_classes'] = df.apply(
-        lambda row: len(row['answers_and_gold_intersection_classes']) / len(row['selected_classes']) 
-        if len(row['selected_classes']) > 0 else 0,
-        axis=1
-    )
-    f1=0
-    for precision, recall in zip(df['precision_for_classes'], df['recall_for_classes']):
-        f1+=(2*precision*recall)/(precision+recall) if (precision+recall)!=0 else 0
-    f1=f1/len(df['recall_for_classes'])
-    df['classes_F1']=f1
-    output_percent_true=df['query_output_exact_match'].mean()*100
-    class_percent_true=df['class_exact_match'].mean()*100
-    df['query_output_exact_match_percentage'] = output_percent_true
-    df['class_exact_match_percentage']=class_percent_true
-    df.drop(columns=['answers_and_gold_intersection'],inplace=True)
-    df.drop(columns=['answers_and_gold_intersection_classes'],inplace=True)
-    df.drop(columns=['extracted_classes'],inplace=True)
-    df.to_csv("test_output_v9_2.csv", index=False, encoding="utf-8")
