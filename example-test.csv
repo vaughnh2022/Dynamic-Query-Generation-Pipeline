@@ -1,0 +1,4 @@
+Question,Gold Star Output,Expected Query Output
+what would an example row look like?,"class1[property1,property2],class2[property3,property4]","['output_id1','output_id2','output_id3']"
+How many Locations exist in the database?,Location[id],39
+How many locations has patient 0a8eebfd-a352-522e-89f0-1d4a13abdebc visited?,"Location[id],LocationEncounter[location_reference,patient_reference],Patient[id]",3
