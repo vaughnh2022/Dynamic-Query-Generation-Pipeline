@@ -1,5 +1,6 @@
 
 import math
+import ast
 import pandas as pd
 from pipeline import grag_pipeline
 
@@ -9,7 +10,6 @@ from pipeline import grag_pipeline
 
 #given the structured input from a csv file extracted gold standard classes
 def find_extracted_classes(full_list):
-    print("full list is ", full_list, "and type is ", type(full_list))
     if full_list is None or full_list == "" or (isinstance(full_list, float) and math.isnan(full_list)):
         return []
     ans=[]
@@ -29,30 +29,69 @@ def find_extracted_classes(full_list):
     ans.append(word)
     return ans
 
+#clean ground truth for comparisons
+def parse_ground_truth(x):
+    if pd.isna(x):
+        return []
+
+    # If it's already a list, make sure all elements are strings
+    if isinstance(x, list):
+        return [str(i) for i in x]
+
+    x = str(x).strip()
+
+    # Convert booleans
+    if x.lower() == 'true':
+        return ["True"]
+    if x.lower() == 'false':
+        return ["False"]
+
+    # Recursively try to parse stringified list
+    while (x.startswith('[') and x.endswith(']')) or (x.startswith('"[') and x.endswith(']"')):
+        try:
+            # Remove outer quotes if present
+            if x.startswith('"[') and x.endswith(']"'):
+                x = x[1:-1]  # remove wrapping quotes
+
+            parsed = ast.literal_eval(x)
+            # If the result is still a string, loop to try again
+            if isinstance(parsed, str):
+                x = parsed
+            else:
+                # Make sure all elements are strings
+                return [str(i) for i in parsed]
+        except:
+            break
+
+    # Fallback: treat as a single-element list
+    return [x]
+
 #takes structured csv input and runs pipeline over each question and calculates metrics
-def pipeline_metrics(path,output_path):
+def pipeline_metrics(path,output_path,temperature):
     df = pd.read_csv(path, encoding="utf-8")
     df = df.drop(df.index[0]).reset_index(drop=True)
-    #pipeline to add a tuple of things into collumns in a pandas datafram
+
+    #clean ground truth for comparisons
+    df['ground_truth_query_output'] = df['ground_truth_query_output'].apply(parse_ground_truth)
+
+    #pipeline to add a tuple of things into collumns in a pandas dataframe
+    print("\n-----Running pipeline for metrics------\n")
     df[["selected_classes", "selected_properties", "pipeline_created_query", "pipeline_query_output"]] = df["question"].apply(
-        lambda x: pd.Series(grag_pipeline(x))
+        lambda x: pd.Series(grag_pipeline(x,temperature))
     )
-    df['ground_truth_query_output'] = df['ground_truth_query_output'].apply(
-        lambda x: ["True"] if x is True
-        else ["False"] if x is False
-        else ([] if pd.isna(x)
-        else [str(i) for i in x] if isinstance(x, list)
-        else [str(x)])
-    )
+    
+    #finds query output exacy match
     df['query_output_exact_match'] = df.apply(
         lambda row: sorted(row['ground_truth_query_output']) == sorted(row['pipeline_query_output']),
         axis=1
     )
+    #finds class exact match
     df['extracted_classes'] = df['gold_classes_and_properties'].apply(find_extracted_classes)
     df['class_exact_match'] = df.apply(
         lambda row: sorted(row['extracted_classes']) == sorted(row['selected_classes']),
         axis=1
     )
+    #calculates precision and recall for output and classes
     df['answers_and_gold_intersection'] = df.apply(
        lambda row: sorted(set(row['ground_truth_query_output']) & set(row['pipeline_query_output'])),
        axis=1
@@ -91,11 +130,14 @@ def pipeline_metrics(path,output_path):
         f1+=(2*precision*recall)/(precision+recall) if (precision+recall)!=0 else 0
     f1=f1/len(df['recall_for_classes'])
     df['classes_F1']=f1
+    #finds percentages
     output_percent_true=df['query_output_exact_match'].mean()*100
     class_percent_true=df['class_exact_match'].mean()*100
     df['query_output_exact_match_percentage'] = output_percent_true
     df['class_exact_match_percentage']=class_percent_true
+    #drops non-relevant tables
     df.drop(columns=['answers_and_gold_intersection'],inplace=True)
     df.drop(columns=['answers_and_gold_intersection_classes'],inplace=True)
     df.drop(columns=['extracted_classes'],inplace=True)
+    #outputs to another csv
     df.to_csv(output_path, index=False, encoding="utf-8")

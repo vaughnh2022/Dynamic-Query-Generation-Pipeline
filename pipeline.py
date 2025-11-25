@@ -7,7 +7,7 @@ import pandas as pd
 from api_commands import gpt_call, remove_first_and_last_line, load_template, query_database
 
 #   Main Function
-def grag_pipeline(question):
+def grag_pipeline(question,temperature):
     """
     This function runs the complete pipeline once
     Note it will output all information into the terminal
@@ -21,16 +21,16 @@ def grag_pipeline(question):
         pass
         #return nl_output('test.csv'), "test query"
     print("\n\n\n\n\n\n--------------------------------------------\n\t\t\tSTARTING PIPELINE\n\nquestion is:\n",question,"\n\n")
-    classes=llm_output_to_list(llm_pick_classes(question)) #runs through LLM to select what classes are important given the question
+    classes=llm_output_to_list(llm_pick_classes(question,temperature)) #runs through LLM to select what classes are important given the question
     print("classes picked are:\n",classes,"\n\n")
     class_path=get_class_path(classes)  #finds the class path using bfs(breadth-first search)
     print("class path is:\n",class_path,"\n\n")
     all_prop=get_class_properties(classes) #collects all properties for each of the selected classes
-    selected_prop=get_selection(all_prop,question)  #runs through LLM to select what properties are important
+    selected_prop=get_selection(all_prop,question,temperature)  #runs through LLM to select what properties are important
     print("choosen properties are:\n",selected_prop,"\n\n")
     example_query=create_example_query(class_path,convert_section_to_question(selected_prop),convert_section_to_optional(selected_prop)) #creates the dynamic example query
     print("example query is:\n",example_query,"\n\n")
-    sparql_query=create_sparql_query(example_query,question) #runs this example query through the LLM again with query construction rules and outputs the final query
+    sparql_query=create_sparql_query(example_query,question,temperature) #runs this example query through the LLM again with query construction rules and outputs the final query
     print("sparql query is:\n",sparql_query,"\n\n")
     print("querying database\n\n")
     answer=query_database(sparql_query)  #queries the database with the given query
@@ -40,7 +40,7 @@ def grag_pipeline(question):
     return (classes,selected_prop,sparql_query,answer_list) #returns the answer_list, selected classes, selected properties, and query to be added to metric output
 
 #extract important classes
-def llm_pick_classes(question):
+def llm_pick_classes(question,temperature):
     """
     This function defines the system for the llm to select classes
     Note the prompt is just the question itself
@@ -79,7 +79,7 @@ Given a question, **return only** the most relevant classes **in this exact form
 
 Condition,Specimen,Patient
 """
-    return gpt_call(prompt, question,.001)
+    return gpt_call(prompt,question,temperature)
 
 def llm_output_to_list(classes):
     """
@@ -251,7 +251,7 @@ def get_class_properties(classes):
     return ans
 
 #llm selects relevant properties
-def get_selection(classes_list,question):
+def get_selection(classes_list,question,temperature):
     """
     This function prompts the llm to select which properties of the selected classes are relevant 
     Args:
@@ -280,7 +280,7 @@ def get_selection(classes_list,question):
     question:
     {question}
     """,
-    0.001
+    temperature
     )
     return call.lstrip()
 
@@ -368,7 +368,7 @@ WHERE {{
 }}"""
 
 #creates sparql query
-def create_sparql_query(example,question):
+def create_sparql_query(example,question,temperature):
     """
     This function runs the example query and question through the final LLM with query construction rules
     Args:
@@ -420,6 +420,7 @@ Do not output any explanatory text outside of the SPARQL query block.
   - “diagnosis A AND diagnosis B” → patient must have both → use separate condition blocks  
   - “diagnosis A OR diagnosis B” → patient must have at least one → use one block with `FILTER IN`  
   - “any diagnosis [category1; category2] AND diagnosis [category3]” → requires (cat1 OR cat2) **and** cat3 → use two blocks  
+  - Use FILTER EXISTS when necessary
 
 - **Optimize query efficiency:**  
   - Avoid unnecessary OPTIONALs and repeated triple patterns  
@@ -432,7 +433,7 @@ Do not output any explanatory text outside of the SPARQL query block.
 ### QUESTION
 {question}
 """
-    return remove_first_and_last_line(gpt_call(system,prompt,0.001))
+    return remove_first_and_last_line(gpt_call(system,prompt,temperature))
 
 #extracts a single collumn from the GraphDB csv file output for metrics
 def column_to_list(csv_file):
